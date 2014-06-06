@@ -195,7 +195,8 @@ class Analyser(object):
 
             counted_lines = new_tree_data.count('\n')
 
-            self.file_paths[file_path] = counted_lines
+            repo_file = self._get_repo_file(file_path=file_path)
+            repo_file.code_lines = counted_lines
 
             # Check if file ending is already registered
             if file_ending in self.file_endings:

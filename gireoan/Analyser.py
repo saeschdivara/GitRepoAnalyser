@@ -120,6 +120,7 @@ class Analyser(object):
                 if self.is_matching_exclude_pattern(path):
                     return False
 
+                # TODO: Check out if this is logical
                 # Looks if path starts not in a searching path
                 if not path.startswith(search_path):
                     return False

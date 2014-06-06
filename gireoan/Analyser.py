@@ -112,12 +112,15 @@ class Analyser(object):
 
             for search_path in self.SEARCHING_PATHS:
 
+                # Looks if path in exclude path
                 if self.in_exclude_path(path):
                     return False
 
+                # Looks if path matches the excluding pattern
                 if self.is_matching_exclude_pattern(path):
                     return False
 
+                # Looks if path starts not in a searching path
                 if not path.startswith(search_path):
                     return False
 

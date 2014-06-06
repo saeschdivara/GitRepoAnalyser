@@ -224,7 +224,7 @@ class Analyser(object):
 
         if not self._has_repo_file(file_path=file_path):
 
-            file = File()
+            file = File(path=file_path)
             self.file_paths[file_path] = file
 
 

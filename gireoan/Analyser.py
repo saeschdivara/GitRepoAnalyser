@@ -17,13 +17,25 @@ def get_file_ending(file_path):
     return file_path.split('.')[-1]
 
 
+################################################################
+# REPO ANALYSER CLASS
+################################################################
 class Analyser(object):
+
+    #########################
+    ## STATIC CLASS MEMBER ##
+    #########################
 
     CHANGE_TYPES = (
         'add',
         'modify',
         'delete',
     )
+
+
+    ####################
+    ## PUBLIC METHODS ##
+    ####################
 
     def __init__(self,
                  repo_name,
@@ -60,7 +72,6 @@ class Analyser(object):
         """
         """
 
-
         for change_tree in self.repo.get_walker():
             author_name = change_tree.commit.author
 
@@ -73,14 +84,31 @@ class Analyser(object):
 
             for tree_change in change_tree.changes():
                 # Save tree data
-                self.save_tree_data(
-                    tree_change=tree_change,
-                )
+                self._save_tree_data(tree_change=tree_change)
 
 
+    def report_file_endings(self):
+        """
+        """
+
+        for ending in self.file_endings:
+            print("%s: %s" % (ending, self.file_endings[ending]))
 
 
-    def is_matching_exclude_pattern(self, path):
+    def report_authors_commits(self):
+        """
+        """
+
+        for author_name in self.authors:
+            author_commit_count = self.authors[author_name]
+            print("%s has %s commits" % (author_name, author_commit_count))
+
+
+    #####################
+    ## PRIVATE METHODS ##
+    #####################
+
+    def _is_matching_exclude_pattern(self, path):
         """
         """
 
@@ -94,7 +122,7 @@ class Analyser(object):
         return False
 
 
-    def in_exclude_path(self, path):
+    def _in_exclude_path(self, path):
         """
         """
 
@@ -106,7 +134,7 @@ class Analyser(object):
         return False
 
 
-    def is_allowed_path(self, path):
+    def _is_allowed_path(self, path):
         """
         """
 
@@ -116,11 +144,11 @@ class Analyser(object):
             for search_path in self.SEARCHING_PATHS:
 
                 # Looks if path in exclude path
-                if self.in_exclude_path(path):
+                if self._in_exclude_path(path):
                     return False
 
                 # Looks if path matches the excluding pattern
-                if self.is_matching_exclude_pattern(path):
+                if self._is_matching_exclude_pattern(path):
                     return False
 
                 # TODO: Check out if this is logical
@@ -128,10 +156,10 @@ class Analyser(object):
                 if not path.startswith(search_path):
                     return False
 
-            if file_ending not in self.ALLOWED_ENDINGS or self.has_repo_file(file_path=path):
+            if file_ending not in self.ALLOWED_ENDINGS or self._has_repo_file(file_path=path):
                 return False
 
-            self.create_repo_file(file_path=path)
+            self._create_repo_file(file_path=path)
 
         except Exception as err:
             print(err)
@@ -139,19 +167,19 @@ class Analyser(object):
         return True
 
 
-    def save_tree_data(self, tree_change):
+    def _save_tree_data(self, tree_change):
 
         # Check if is list
         if type(tree_change) is list:
 
             for change in tree_change:
-                self.parse_change_tree(tree_change=change)
+                self._parse_change_tree(tree_change=change)
 
         else:
-            self.parse_change_tree(tree_change=tree_change)
+            self._parse_change_tree(tree_change=tree_change)
 
 
-    def parse_change_tree(self, tree_change):
+    def _parse_change_tree(self, tree_change):
 
         change_type = tree_change.type
 
@@ -169,7 +197,7 @@ class Analyser(object):
             file_ending = get_file_ending(file_path)
 
             # Check if file is in allowed path
-            if not self.is_allowed_path(path=file_path):
+            if not self._is_allowed_path(path=file_path):
                 return
 
             counted_lines = new_tree_data.count('\n')
@@ -190,17 +218,17 @@ class Analyser(object):
             self.deleted_paths[file_path] = True
 
 
-    def create_repo_file(self, file_path):
+    def _create_repo_file(self, file_path):
         """
         """
 
-        if not self.has_repo_file(file_path=file_path):
+        if not self._has_repo_file(file_path=file_path):
 
             file = File()
             self.file_paths[file_path] = file
 
 
-    def get_repo_file(self, file_path):
+    def _get_repo_file(self, file_path):
         """
         """
 
@@ -208,7 +236,7 @@ class Analyser(object):
         return file
 
 
-    def has_repo_file(self, file_path):
+    def _has_repo_file(self, file_path):
         """
         """
 
@@ -216,24 +244,3 @@ class Analyser(object):
             return True
         else:
             return False
-
-
-    def report_file_endings(self):
-        """
-        """
-
-        for ending in self.file_endings:
-            print("%s: %s" % (ending, self.file_endings[ending]))
-
-
-
-    def report_authors_commits(self):
-        """
-        """
-
-        for author_name in self.authors:
-            author_commit_count = self.authors[author_name]
-            print("%s has %s commits" % (author_name, author_commit_count))
-
-
-

@@ -5,6 +5,8 @@ import re
 from dulwich.repo import Repo
 from dulwich.objects import Blob
 
+# Gireoan
+from gireoan.repo.File import File
 
 
 
@@ -126,10 +128,10 @@ class Analyser(object):
                 if not path.startswith(search_path):
                     return False
 
-            if file_ending not in self.ALLOWED_ENDINGS or path in self.file_paths:
+            if file_ending not in self.ALLOWED_ENDINGS or self.has_repo_file(file_path=path):
                 return False
 
-            self.file_paths[path] = True
+            self.create_repo_file(file_path=path)
 
         except Exception as err:
             print(err)
@@ -186,6 +188,34 @@ class Analyser(object):
             file_path = tree_change.old.path
 
             self.deleted_paths[file_path] = True
+
+
+    def create_repo_file(self, file_path):
+        """
+        """
+
+        if not self.has_repo_file(file_path=file_path):
+
+            file = File()
+            self.file_paths[file_path] = file
+
+
+    def get_repo_file(self, file_path):
+        """
+        """
+
+        file = self.file_paths[file_path]
+        return file
+
+
+    def has_repo_file(self, file_path):
+        """
+        """
+
+        if file_path in self.file_paths:
+            return True
+        else:
+            return False
 
 
     def report_file_endings(self):

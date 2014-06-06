@@ -10,13 +10,6 @@ from gireoan.repo.File import File
 
 
 
-def get_file_ending(file_path):
-    """
-    """
-
-    return file_path.split('.')[-1]
-
-
 ################################################################
 # REPO ANALYSER CLASS
 ################################################################
@@ -139,7 +132,7 @@ class Analyser(object):
         """
 
         try:
-            file_ending = get_file_ending(path)
+            file_ending = File.get_ending(file_path=path)
 
             for search_path in self.SEARCHING_PATHS:
 
@@ -194,7 +187,7 @@ class Analyser(object):
             if file_path in self.deleted_paths:
                 return
 
-            file_ending = get_file_ending(file_path)
+            file_ending = File.get_ending(file_path=file_path)
 
             # Check if file is in allowed path
             if not self._is_allowed_path(path=file_path):

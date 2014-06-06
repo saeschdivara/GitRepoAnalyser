@@ -170,11 +170,14 @@ class Analyser(object):
             if not self.is_allowed_path(path=file_path):
                 return
 
+            counted_lines = new_tree_data.count('\n')
+
             # Check if file ending is already registered
             if file_ending in self.file_endings:
-                self.file_endings[file_ending] += new_tree_data.count('\n')
+
+                self.file_endings[file_ending] += counted_lines
             else:
-                self.file_endings[file_ending] = new_tree_data.count('\n')
+                self.file_endings[file_ending] = counted_lines
 
 
         elif change_type is 'delete':

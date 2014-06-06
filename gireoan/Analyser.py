@@ -43,7 +43,6 @@ class Analyser(object):
         self.repo = Repo(repo_name)
 
         # File infos
-        self.file_endings = {}
         self.file_paths = {}
         self.deleted_paths = {}
 
@@ -84,17 +83,39 @@ class Analyser(object):
         """
         """
 
-        for ending in self.file_endings:
-            print("%s: %s" % (ending, self.file_endings[ending]))
+        file_endings = {}
+
+        # Get file ending info
+        for file_path in self.file_paths:
+
+            file = self.file_paths[file_path]
+            file_ending = file.ending
+
+            if file_ending in file_endings:
+                file_endings[file_ending] += file.code_lines
+            else:
+                file_endings[file_ending] = file.code_lines
+
+        # Print report
+        print("############################################")
+
+        for ending in file_endings:
+            print("%s: %s" % (ending, file_endings[ending]))
+
+        print("############################################")
 
 
     def report_authors_commits(self):
         """
         """
 
+        print("############################################")
+
         for author_name in self.authors:
             author_commit_count = self.authors[author_name]
             print("%s has %s commits" % (author_name, author_commit_count))
+
+        print("############################################")
 
 
     #####################
@@ -195,15 +216,11 @@ class Analyser(object):
 
             counted_lines = new_tree_data.count('\n')
 
+            # Get repo file
             repo_file = self._get_repo_file(file_path=file_path)
+            # Set repo file data
             repo_file.code_lines = counted_lines
-
-            # Check if file ending is already registered
-            if file_ending in self.file_endings:
-
-                self.file_endings[file_ending] += counted_lines
-            else:
-                self.file_endings[file_ending] = counted_lines
+            repo_file.ending = file_ending
 
 
         elif change_type is 'delete':

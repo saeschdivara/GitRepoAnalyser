@@ -18,5 +18,5 @@ class File(object):
 
         self.ending = ''
 
-        self.commits = 0
+        self.commits = []
         self.code_lines = 0

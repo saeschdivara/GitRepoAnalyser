@@ -38,6 +38,7 @@ class Analyser(object):
         # File infos
         self.file_endings = {}
         self.file_paths = {}
+        self.deleted_paths = {}
 
         # Commits
         self.authors = {}
@@ -150,31 +151,36 @@ class Analyser(object):
 
     def parse_change_tree(self, tree_change):
 
-        change_type = ''
-
         change_type = tree_change.type
-        new_tree_sha = tree_change.new.sha
 
-        if new_tree_sha is None:
-            return
+        if change_type is 'add' or change_type is 'modify':
 
-        new_tree_value = self.repo[new_tree_sha]
-        new_tree_data = new_tree_value.data
+            new_tree_sha = tree_change.new.sha
+            new_tree_value = self.repo[new_tree_sha]
+            new_tree_data = new_tree_value.data
+            file_path = tree_change.new.path
 
-        file_path = tree_change.new.path
-        file_ending = get_file_ending(file_path)
+            # Check if the file has not been later being deleted
+            if file_path in self.deleted_paths:
+                return
 
-        if not self.is_allowed_path(path=file_path):
-            return
+            file_ending = get_file_ending(file_path)
 
-        if change_type is 'delete':
-            return
+            # Check if file is in allowed path
+            if not self.is_allowed_path(path=file_path):
+                return
+
+            # Check if file ending is already registered
+            if file_ending in self.file_endings:
+                self.file_endings[file_ending] += new_tree_data.count('\n')
+            else:
+                self.file_endings[file_ending] = new_tree_data.count('\n')
 
 
-        if file_ending in self.file_endings:
-            self.file_endings[file_ending] += new_tree_data.count('\n')
-        else:
-            self.file_endings[file_ending] = new_tree_data.count('\n')
+        elif change_type is 'delete':
+            file_path = tree_change.old.path
+
+            self.deleted_paths[file_path] = True
 
 
     def report_file_endings(self):

@@ -7,13 +7,13 @@ class TestAnalyser(unittest.TestCase):
     def setUp(self):
         repository_path = ''
 
-        searching_paths = ( '', )
+        searching_paths = ( '/example/', )
 
-        allowed_endings = ( '', )
+        allowed_endings = ( 'py', )
 
-        exclude_patters = ( '', )
+        exclude_patters = ( '.gitignore', )
 
-        exclude_paths = ( '', )
+        exclude_paths = ( '/env/', )
 
         self.analyer_obj = Analyser.Analyser(
             repo_name=repository_path,
@@ -29,7 +29,7 @@ class TestAnalyser(unittest.TestCase):
 
     def test_is_allowed_path(self):
 
-        test_path = ''
+        test_path = '/example/test.py'
 
         is_allowed_path = self.analyer_obj._is_allowed_path(path=test_path)
 

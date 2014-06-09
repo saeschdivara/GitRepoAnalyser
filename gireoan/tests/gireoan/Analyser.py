@@ -27,6 +27,7 @@ class TestAnalyser(unittest.TestCase):
     def tearDown(self):
         pass
 
+
     def test_is_allowed_path(self):
 
         test_path = '/example/test.py'
@@ -34,3 +35,14 @@ class TestAnalyser(unittest.TestCase):
         is_allowed_path = self.analyer_obj._is_allowed_path(path=test_path)
 
         self.assertTrue(is_allowed_path)
+
+
+    def test_double_ending_not_allowed(self):
+        """
+        """
+
+        test_path = '/example/test.py.tpl'
+
+        is_allowed_path = self.analyer_obj._is_allowed_path(path=test_path)
+
+        self.assertFalse(is_allowed_path)

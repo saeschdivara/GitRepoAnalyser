@@ -10,7 +10,7 @@ except:
 # Start main
 if __name__ == '__main__':
     repo_analyser = Analyser.Analyser(
-        repo_name = local_settings.REPOSITORY_PATH,
+        repo_name=local_settings.REPOSITORY_PATH,
         searching_paths=local_settings.SEARCHING_PATHS,
         allowed_endings=local_settings.ALLOWED_ENDINGS,
         exclude_patters=local_settings.EXCLUDE_PATTERNS,

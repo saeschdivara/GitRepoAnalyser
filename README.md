@@ -11,3 +11,4 @@ How to get started
 4. pip install -r requirements/requirements.txt
 5. cp local_settings.tpl.py local_settings.py
 6. python manage.py
+7. python test.py

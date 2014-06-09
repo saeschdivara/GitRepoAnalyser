@@ -1,11 +1,11 @@
 from gireoan import Analyser
-
+from gireoan.Errors import NoSettingsFileException
 
 
 try:
     import local_settings
 except:
-    raise ('You need to create a local_settings.py file')
+    raise (NoSettingsFileException())
 
 # Start main
 if __name__ == '__main__':

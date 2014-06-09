@@ -1,5 +1,6 @@
 GitRepoAnalyser
 ===============
+[![Build Status](https://travis-ci.org/saeschdivara/GitRepoAnalyser.png)](https://travis-ci.org/saeschdivara/GitRepoAnalyser#)
 
 How to get started
 ------------------

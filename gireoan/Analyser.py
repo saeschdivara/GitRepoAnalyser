@@ -68,9 +68,7 @@ class Analyser(object):
             author_name = change_tree.commit.author
 
             if author_name in self.authors:
-                author_count = self.authors[author_name]
-                author_count += 1
-                self.authors[author_name] = author_count
+                self.authors[author_name] += 1
             else:
                 self.authors[author_name] = 1
 

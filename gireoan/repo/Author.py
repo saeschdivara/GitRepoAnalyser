@@ -1,7 +1,8 @@
 class Author(object):
 
-    def __init__(self):
+    def __init__(self, name):
         """
         """
 
-        pass
+        self.name = name
+        self.commits = []

@@ -1,4 +1,5 @@
 # Regex
+from gireoan.repo import Author
 import re
 
 # Git
@@ -66,10 +67,10 @@ class Analyser(object):
         for change_tree in self.repo.get_walker():
             author_name = change_tree.commit.author
 
-            if author_name in self.authors:
-                self.authors[author_name] += 1
-            else:
-                self.authors[author_name] = 1
+            if not author_name in self.authors:
+                self.authors[author_name] = Author.Author(name=author_name)
+
+            self.authors[author_name].commits.append( change_tree.commit )
 
             for tree_change in change_tree.changes():
                 # Save tree data
@@ -109,7 +110,7 @@ class Analyser(object):
         print("############################################")
 
         for author_name in self.authors:
-            author_commit_count = self.authors[author_name]
+            author_commit_count = len( self.authors[author_name].commits )
             print("%s has %s commits" % (author_name, author_commit_count))
 
         print("############################################")

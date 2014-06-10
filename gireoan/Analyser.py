@@ -58,6 +58,10 @@ class Analyser(object):
         self.EXCLUDE_PATTERNS = exclude_patters
         self.EXCLUDE_PATHS = exclude_paths
 
+        # Checks
+        if self.SEARCHING_PATHS == '':
+            self.SEARCHING_PATHS = '/'
+
 
 
     def do_analyse(self):
@@ -165,7 +169,7 @@ class Analyser(object):
 
                 # TODO: Check out if this is logical
                 # Looks if path starts not in a searching path
-                if not path.startswith(search_path):
+                if not self._is_in_search_path(path=path, search_path=search_path):
                     return False
 
             if file_ending not in self.ALLOWED_ENDINGS or self._has_repo_file(file_path=path):
@@ -225,6 +229,15 @@ class Analyser(object):
             file_path = tree_change.old.path
 
             self.deleted_paths[file_path] = True
+
+
+    def _is_in_search_path(self, path, search_path):
+        """
+        """
+
+        new_path = '/' + path
+
+        return new_path.startswith(search_path)
 
 
     def _create_repo_file(self, file_path):

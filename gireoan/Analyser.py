@@ -210,6 +210,12 @@ class Analyser(object):
 
             file_ending = File.get_ending(file_path=file_path)
 
+            try:
+                repo_file = self._get_repo_file(file_path=file_path)
+                repo_file.commits.append( tree_change.commit )
+            except:
+                pass
+
             # Check if file is in allowed path
             if not self._is_allowed_path(path=file_path):
                 return

@@ -242,6 +242,7 @@ class Analyser(object):
             # Set repo file data
             repo_file.code_lines = counted_lines
             repo_file.ending = file_ending
+            repo_file.commits.append( change_tree.commit )
 
 
         elif change_type is 'delete':

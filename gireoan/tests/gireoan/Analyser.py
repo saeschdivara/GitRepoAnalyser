@@ -37,6 +37,18 @@ class TestAnalyser(unittest.TestCase):
         self.assertTrue(is_allowed_path)
 
 
+    def test_search_not_root_path(self):
+        """
+        """
+
+        self.analyer_obj.SEARCHING_PATHS = ( 'example/', )
+        test_path = '/example/test.py'
+
+        is_allowed_path = self.analyer_obj._is_allowed_path(path=test_path)
+
+        self.assertTrue(is_allowed_path)
+
+
     def test_double_ending_not_allowed(self):
         """
         """

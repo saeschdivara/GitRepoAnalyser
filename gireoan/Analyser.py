@@ -132,6 +132,30 @@ class Analyser(object):
         print("############################################")
 
 
+    def report_top_10_commited_files(self):
+
+        print("############################################")
+
+        top_ten = []
+
+        for file_path in self.file_paths:
+            top_ten.append(self.file_paths[file_path])
+
+        # Sort the files by the number of commits
+        sorted_top_ten = sorted(top_ten, key=lambda repo_file: len(repo_file.commits), reverse=True)
+
+        for idx, repo_file in enumerate(sorted_top_ten):
+
+            # To have correct index we need to check here
+            if idx is 10:
+                break
+
+            file_commit_count = len(repo_file.commits)
+            print("%s is in %s commits" % (repo_file.path, file_commit_count))
+
+        print("############################################")
+
+
 
     #####################
     ## PRIVATE METHODS ##

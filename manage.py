@@ -20,5 +20,4 @@ if __name__ == '__main__':
     repo_analyser.do_analyse()
     repo_analyser.report_file_endings()
     repo_analyser.report_authors_commits()
-    repo_analyser.report_commits_per_file()
-
+    repo_analyser.report_top_10_commited_files()

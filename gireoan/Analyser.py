@@ -58,11 +58,6 @@ class Analyser(object):
         self.EXCLUDE_PATTERNS = exclude_patters
         self.EXCLUDE_PATHS = exclude_paths
 
-        # Checks
-        if self.SEARCHING_PATHS == '':
-            self.SEARCHING_PATHS = '/'
-
-
 
     def do_analyse(self):
         """
@@ -279,9 +274,15 @@ class Analyser(object):
         """
         """
 
-        new_path = '/' + path
+        if not path.startswith('/'):
+            path = '/' + path
 
-        return new_path.startswith(search_path)
+        if search_path == '':
+            search_path = '/'
+        elif not search_path.startswith('/'):
+            search_path = '/' + search_path
+
+        return path.startswith(search_path)
 
 
     def _create_repo_file(self, file_path):

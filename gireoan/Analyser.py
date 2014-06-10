@@ -78,7 +78,7 @@ class Analyser(object):
 
             for tree_change in change_tree.changes():
                 # Save tree data
-                self._save_tree_data(tree_change=tree_change)
+                self._save_tree_data(change_tree=change_tree, tree_change=tree_change)
 
 
     def report_file_endings(self):
@@ -118,6 +118,19 @@ class Analyser(object):
             print("%s has %s commits" % (author_name, author_commit_count))
 
         print("############################################")
+
+
+    def report_commits_per_file(self):
+
+        print("############################################")
+
+        for file_path in self.file_paths:
+            repo_file = self.file_paths[file_path]
+            file_commit_count = len(repo_file.commits)
+            print("%s is in %s commits" % (repo_file.path, file_commit_count))
+
+        print("############################################")
+
 
 
     #####################
@@ -181,19 +194,19 @@ class Analyser(object):
         return True
 
 
-    def _save_tree_data(self, tree_change):
+    def _save_tree_data(self, change_tree, tree_change):
 
         # Check if is list
         if type(tree_change) is list:
 
             for change in tree_change:
-                self._parse_change_tree(tree_change=change)
+                self._parse_change_tree(change_tree=change_tree, tree_change=change)
 
         else:
-            self._parse_change_tree(tree_change=tree_change)
+            self._parse_change_tree(change_tree=change_tree, tree_change=tree_change)
 
 
-    def _parse_change_tree(self, tree_change):
+    def _parse_change_tree(self, change_tree, tree_change):
 
         change_type = tree_change.type
 
@@ -210,9 +223,11 @@ class Analyser(object):
 
             file_ending = File.get_ending(file_path=file_path)
 
+            # Try to get repo file
             try:
                 repo_file = self._get_repo_file(file_path=file_path)
-                repo_file.commits.append( tree_change.commit )
+                # Add commit to repo file
+                repo_file.commits.append( change_tree.commit )
             except:
                 pass
 

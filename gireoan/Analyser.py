@@ -1,5 +1,6 @@
+# Time
+import time
 # Regex
-from gireoan.repo import Author
 import re
 
 # Git
@@ -7,6 +8,7 @@ from dulwich.repo import Repo
 from dulwich.objects import Blob
 
 # Gireoan
+from gireoan.repo import Author
 from gireoan.repo.File import File
 
 
@@ -148,6 +150,31 @@ class Analyser(object):
 
             file_commit_count = len(repo_file.commits)
             print("%s is in %s commits" % (repo_file.path, file_commit_count))
+
+        print("############################################")
+
+
+    def report_for_all_authors(self):
+        """
+        """
+
+        for author_name in self.authors:
+            self.report_for_author(name=author_name)
+
+
+    def report_for_author(self, name):
+        """
+        """
+
+        author = self.authors[name]
+
+        print("############################################")
+        print("Author: %s" % author.name)
+
+        for commit in author.commits:
+
+            author_commit_time = time.ctime(commit.author_time)
+            print(author_commit_time)
 
         print("############################################")
 

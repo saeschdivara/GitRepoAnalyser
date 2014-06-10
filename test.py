@@ -2,7 +2,7 @@
 import unittest
 
 # Test suites
-from gireoan.tests.gireoan.Analyser import TestAnalyserWithSubPath, TestAnalyserWithRootPath
+from gireoan.tests.gireoan.Analyser import TestAnalyser
 
 
 
@@ -12,8 +12,7 @@ errors = 0
 failures = 0
 
 # Test suites
-test_suites.append( unittest.TestLoader().loadTestsFromTestCase(TestAnalyserWithSubPath) )
-test_suites.append( unittest.TestLoader().loadTestsFromTestCase(TestAnalyserWithRootPath) )
+test_suites.append( unittest.TestLoader().loadTestsFromTestCase(TestAnalyser) )
 
 for test_suite in test_suites:
 

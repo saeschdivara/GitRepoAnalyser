@@ -175,8 +175,6 @@ class Analyser(object):
             if file_ending not in self.ALLOWED_ENDINGS or self._has_repo_file(file_path=path):
                 return False
 
-            self._create_repo_file(file_path=path)
-
         except Exception as err:
             print(err)
 
@@ -219,7 +217,7 @@ class Analyser(object):
             counted_lines = new_tree_data.count('\n')
 
             # Get repo file
-            repo_file = self._get_repo_file(file_path=file_path)
+            repo_file = self._create_repo_file(file_path=file_path)
             # Set repo file data
             repo_file.code_lines = counted_lines
             repo_file.ending = file_ending
@@ -248,6 +246,11 @@ class Analyser(object):
 
             file = File(path=file_path)
             self.file_paths[file_path] = file
+
+            return file
+
+        else:
+            return None
 
 
     def _get_repo_file(self, file_path):

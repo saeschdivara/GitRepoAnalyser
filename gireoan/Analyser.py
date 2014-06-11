@@ -171,10 +171,57 @@ class Analyser(object):
         print("############################################")
         print("Author: %s" % author.name)
 
+        # year
+        years = {}
+
         for commit in author.commits:
 
-            author_commit_time = time.ctime(commit.author_time)
-            print(author_commit_time)
+            author_commit_time = time.localtime(commit.author_time)
+
+            commit_year = str(author_commit_time.tm_year)
+
+            if not commit_year in years:
+                years[commit_year] = {}
+
+            this_year = years[commit_year]
+            commit_month = author_commit_time.tm_mon
+
+            if not commit_month in this_year:
+                this_year[commit_month] = {}
+
+            this_month = this_year[commit_month]
+            commit_day = author_commit_time.tm_mday
+
+            if not commit_day in this_month:
+                this_month[commit_day] = 0
+
+            this_month[commit_day] += 1
+
+
+            # author_commit_time = time.ctime(commit.author_time)
+            # print("%s : %s" % (author_commit_time, commit.sha))
+
+        reverse_sort_order = True
+
+        sorted_years = sorted(years, reverse=reverse_sort_order)
+
+        for year in sorted_years:
+            print("Year %s:" % year)
+
+            year_dict = years[year]
+            sorted_year_dict = sorted(year_dict, reverse=reverse_sort_order)
+
+            for month in sorted_year_dict:
+                print('     Month %s:' % month)
+
+                month_dict = year_dict[month]
+                sorted_month_dict = sorted(month_dict, reverse=reverse_sort_order)
+
+                for day in sorted_month_dict:
+                    if day < 10:
+                        print('             Day  %s: %s' % (day, month_dict[day]))
+                    else:
+                        print('             Day %s: %s' % (day, month_dict[day]))
 
         print("############################################")
 

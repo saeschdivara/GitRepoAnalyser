@@ -3,3 +3,4 @@ atlassian-ide-plugin.xml
 
 local_settings.py
 *.pyc
+env

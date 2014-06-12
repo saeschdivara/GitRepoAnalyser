@@ -1,4 +1,4 @@
-from gireoan import Analyser
+from gireoan.Analyser import Analyser
 from gireoan.Errors import NoSettingsFileException
 
 
@@ -9,7 +9,7 @@ except:
 
 # Start main
 if __name__ == '__main__':
-    repo_analyser = Analyser.Analyser(
+    repo_analyser = Analyser(
         repo_name=local_settings.REPOSITORY_PATH,
         searching_paths=local_settings.SEARCHING_PATHS,
         allowed_endings=local_settings.ALLOWED_ENDINGS,

@@ -11,6 +11,9 @@ from dulwich.objects import Blob
 from gireoan.repo import Author
 from gireoan.repo.File import File
 
+from gireoan.report.Export import ChartExporter
+from gireoan.report.Report import FileEndingReport
+
 
 
 ################################################################
@@ -83,26 +86,19 @@ class Analyser(object):
         """
         """
 
-        file_endings = {}
+        file_ending_report = FileEndingReport(paths=self.file_paths)
+        file_ending_report.generate()
 
-        # Get file ending info
-        for file_path in self.file_paths:
-
-            file = self.file_paths[file_path]
-            file_ending = file.ending
-
-            if file_ending in file_endings:
-                file_endings[file_ending] += file.code_lines
-            else:
-                file_endings[file_ending] = file.code_lines
-
-        # Print report
-        print("############################################")
-
-        for ending in file_endings:
-            print("%s: %s" % (ending, file_endings[ending]))
-
-        print("############################################")
+        chart_type = ChartExporter.EXPORT_TYPE['PIE']
+        file_ending_report.report(exporter=ChartExporter(type=chart_type))
+        #
+        # # Print report
+        # print("############################################")
+        #
+        # for ending in file_endings:
+        #     print("%s: %s" % (ending, file_endings[ending]))
+        #
+        # print("############################################")
 
 
     def report_authors_commits(self):
@@ -158,8 +154,8 @@ class Analyser(object):
         """
         """
 
-        for author_name in self.authors:
-            self.report_for_author(name=author_name)
+        # for author_name in self.authors:
+        #     self.report_for_author(name=author_name)
 
 
     def report_for_author(self, name):

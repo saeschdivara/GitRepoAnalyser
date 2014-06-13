@@ -13,7 +13,8 @@ class StdoutExporter(object):
 class ChartExporter(object):
 
     EXPORT_TYPE = {
-        "PIE": 1
+        "PIE": 1,
+        "SPLINE": 2,
     }
 
 
@@ -34,7 +35,17 @@ class ChartExporter(object):
 
             complete_html = template.replace('{{ javascript }}', javascript)
 
-            chart_file = file('web/statics/foo.html', mode='w')
+            chart_file = file('web/statics/pie_chart.html', mode='w')
+            chart_file.write(complete_html)
+            chart_file.close()
+
+        elif self.type is ChartExporter.EXPORT_TYPE['SPLINE']:
+            template = self._spline_chart_template()
+            javascript = self._create_spline_chart_javascript(data_list=data_list)
+
+            complete_html = template.replace('{{ javascript }}', javascript)
+
+            chart_file = file('web/statics/spline_chart.html', mode='w')
             chart_file.write(complete_html)
             chart_file.close()
 
@@ -90,6 +101,83 @@ class ChartExporter(object):
         """
 
         template = standard_template.replace('{{ HIGH_CHARTS_OBJECT }}', basic_pie_chart_javascript)
+
+        return template
+
+
+    def _create_spline_chart_javascript(self, data_list):
+        """
+        """
+
+        javascript = ''
+
+        javascript_template = """
+
+                {
+                    name: '{{ LINE_NAME }}',
+                    data: [
+                        {{ DATA_LIST }}
+                    ]
+                },
+        """
+
+        for index, report_data in enumerate(data_list):
+            data_string_list = ''
+
+            for time_data in report_data.data:
+                data_string_list += "[Date.UTC(%s), %s]," % (time_data.date_string, time_data.value)
+
+            clone_template = javascript_template.replace('LINE_NAME', report_data.display_name)
+            clone_template = clone_template.replace('DATA_LIST', data_string_list)
+
+            javascript += clone_template
+
+        return javascript
+
+
+    def _spline_chart_template(self):
+        """
+        """
+
+        standard_template = self._standard_template()
+
+        basic_spline_chart_javascript = """
+            chart: {
+                type: 'spline'
+            },
+            title: {
+                text: 'Snow depth at Vikjafjellet, Norway'
+            },
+            subtitle: {
+                text: 'Irregular time data in Highcharts JS'
+            },
+            xAxis: {
+                type: 'datetime',
+                dateTimeLabelFormats: { // don't display the dummy year
+                    month: '%e. %b',
+                    year: '%b'
+                },
+                title: {
+                    text: 'Date'
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'Snow depth (m)'
+                },
+                min: 0
+            },
+            tooltip: {
+                headerFormat: '<b>{series.name}</b><br>',
+                pointFormat: '{point.x:%e. %b}: {point.y:.2f} m'
+            },
+
+            series: [
+                {{ javascript }}
+            ]
+        """
+
+        template = standard_template.replace('{{ HIGH_CHARTS_OBJECT }}', basic_spline_chart_javascript)
 
         return template
 

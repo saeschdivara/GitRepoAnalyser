@@ -125,10 +125,10 @@ class ChartExporter(object):
             data_string_list = ''
 
             for time_data in report_data.data:
-                data_string_list += "[Date.UTC(%s), %s]," % (time_data.date_string, time_data.value)
+                data_string_list += "[Date.UTC(%s), %s]," % (time_data.display_name, time_data.data)
 
-            clone_template = javascript_template.replace('LINE_NAME', report_data.display_name)
-            clone_template = clone_template.replace('DATA_LIST', data_string_list)
+            clone_template = javascript_template.replace('{{ LINE_NAME }}', report_data.display_name)
+            clone_template = clone_template.replace('{{ DATA_LIST }}', data_string_list)
 
             javascript += clone_template
 

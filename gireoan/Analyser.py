@@ -12,7 +12,7 @@ from gireoan.repo import Author
 from gireoan.repo.File import File
 
 from gireoan.report.Export import ChartExporter
-from gireoan.report.Report import FileEndingReport
+from gireoan.report.Report import FileEndingReport, AuthorsCommitReport
 
 
 
@@ -154,8 +154,12 @@ class Analyser(object):
         """
         """
 
-        # for author_name in self.authors:
-        #     self.report_for_author(name=author_name)
+
+        author_commit_report = AuthorsCommitReport(authors=self.authors)
+        author_commit_report.generate()
+
+        chart_type = ChartExporter.EXPORT_TYPE['SPLINE']
+        author_commit_report.report(exporter=ChartExporter(type=chart_type))
 
 
     def report_for_author(self, name):

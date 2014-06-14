@@ -215,7 +215,7 @@ class ChartExporter(object):
                 <script src="3rdparty/javascript/highcharts/js/highcharts.js"></script>
                 <script src="3rdparty/javascript/highcharts/js/modules/exporting.js"></script>
 
-                <div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+                <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
                 </body>
             </html>

@@ -146,7 +146,7 @@ class ChartExporter(object):
                 type: 'spline'
             },
             title: {
-                text: 'Snow depth at Vikjafjellet, Norway'
+                text: 'Commits per day of an author'
             },
             subtitle: {
                 text: 'Irregular time data in Highcharts JS'
@@ -163,13 +163,14 @@ class ChartExporter(object):
             },
             yAxis: {
                 title: {
-                    text: 'Snow depth (m)'
+                    text: 'Commit number'
                 },
-                min: 0
+                min: 0,
+                max: 60
             },
             tooltip: {
                 headerFormat: '<b>{series.name}</b><br>',
-                pointFormat: '{point.x:%e. %b}: {point.y:.2f} m'
+                pointFormat: '{point.x:%e. %b}: {point.y}'
             },
 
             series: [
@@ -215,7 +216,7 @@ class ChartExporter(object):
                 <script src="3rdparty/javascript/highcharts/js/highcharts.js"></script>
                 <script src="3rdparty/javascript/highcharts/js/modules/exporting.js"></script>
 
-                <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                <div id="container" style="min-width: 310px; height: 800px; margin: 0 auto"></div>
 
                 </body>
             </html>

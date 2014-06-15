@@ -23,13 +23,13 @@ class FileEndingReport(object):
         # Get file ending info
         for file_path in self.paths:
 
-            file = self.paths[file_path]
-            file_ending = file.ending
+            file_obj = self.paths[file_path]
+            file_ending = file_obj.ending
 
             if file_ending in file_endings:
-                file_endings[file_ending] += file.code_lines
+                file_endings[file_ending] += file_obj.code_lines
             else:
-                file_endings[file_ending] = file.code_lines
+                file_endings[file_ending] = file_obj.code_lines
                 
                 
         for file_ending in file_endings:
@@ -94,11 +94,8 @@ class AuthorsCommitReport(object):
 
             this_month[commit_day] += 1
 
-
-            # author_commit_time = time.ctime(commit.author_time)
-            # print("%s : %s" % (author_commit_time, commit.sha))
-
-        reverse_sort_order = True
+        # The order has to be normal for the charts to work correctly
+        reverse_sort_order = False
 
         data_list = []
         author_data_object = ReportData(display_name=author.name, data=data_list)

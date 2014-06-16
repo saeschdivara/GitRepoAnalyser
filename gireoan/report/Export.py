@@ -165,8 +165,7 @@ class ChartExporter(object):
                 title: {
                     text: 'Commit number'
                 },
-                min: 0,
-                max: 60
+                min: 0
             },
             tooltip: {
                 headerFormat: '<b>{series.name}</b><br>',
